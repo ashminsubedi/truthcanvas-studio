@@ -51,6 +51,7 @@ const Index = () => {
       <HeroSection />
       <SageSection badge="Professional Journey" cards={currentRoles} />
       <CareerTimeline />
+      <ArticlesSection />
       <SageSection id="portfolio" badge="Key Initiatives" cards={initiativeCards} />
       <InternationalSection />
       <Footer />
