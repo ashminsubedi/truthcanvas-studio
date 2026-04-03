@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import SageSection from "@/components/SageSection";
 import CareerTimeline from "@/components/CareerTimeline";
+import ArticlesSection from "@/components/ArticlesSection";
 import InternationalSection from "@/components/InternationalSection";
 import Footer from "@/components/Footer";
 
@@ -50,6 +51,7 @@ const Index = () => {
       <HeroSection />
       <SageSection badge="Professional Journey" cards={currentRoles} />
       <CareerTimeline />
+      <ArticlesSection />
       <SageSection id="portfolio" badge="Key Initiatives" cards={initiativeCards} />
       <InternationalSection />
       <Footer />
