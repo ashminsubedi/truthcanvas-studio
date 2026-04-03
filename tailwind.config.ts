@@ -24,7 +24,9 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         sage: "hsl(var(--sage))",
-        "sage-light": "hsl(var(--sage-light))",
+        "sage-bg": "hsl(var(--sage-bg))",
+        cream: "hsl(var(--cream))",
+        "cream-dark": "hsl(var(--cream-dark))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

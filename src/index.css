@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600;700;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 40 33% 96%;
     --foreground: 0 0% 0%;
 
     --card: 0 0% 100%;
@@ -18,13 +18,13 @@
     --primary: 0 0% 0%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 150 18% 60%;
+    --secondary: 153 18% 60%;
     --secondary-foreground: 0 0% 0%;
 
-    --muted: 150 10% 92%;
+    --muted: 150 12% 90%;
     --muted-foreground: 0 0% 27%;
 
-    --accent: 150 18% 60%;
+    --accent: 153 18% 60%;
     --accent-foreground: 0 0% 0%;
 
     --destructive: 0 84% 60%;
@@ -34,10 +34,12 @@
     --input: 0 0% 88%;
     --ring: 0 0% 0%;
 
-    --radius: 50px;
+    --radius: 0px;
 
-    --sage: 150 18% 60%;
-    --sage-light: 147 16% 90%;
+    --sage: 153 18% 60%;
+    --sage-bg: 152 21% 93%;
+    --cream: 40 33% 96%;
+    --cream-dark: 40 20% 90%;
 
     --font-display: 'Archivo Black', sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
@@ -46,7 +48,7 @@
     --sidebar-foreground: 0 0% 0%;
     --sidebar-primary: 0 0% 0%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 150 18% 60%;
+    --sidebar-accent: 153 18% 60%;
     --sidebar-accent-foreground: 0 0% 0%;
     --sidebar-border: 0 0% 88%;
     --sidebar-ring: 0 0% 0%;
@@ -61,9 +63,14 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    text-transform: uppercase;
   }
 }
