@@ -18,7 +18,7 @@ const HeroSection = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full">
         <div className="max-w-3xl">
           <p className="font-body text-sm uppercase tracking-[0.3em] text-primary font-semibold mb-4 animate-fade-up">
-            Investigative Journalist
+            Sudarshan Khatiwada · Investigative Journalist
           </p>
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black leading-[0.9] text-foreground mb-6 animate-fade-up [animation-delay:200ms] opacity-0">
             Uncovering the stories<br />

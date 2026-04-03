@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="font-display text-xl font-bold tracking-tight text-foreground">
-          J. <span className="text-primary">Carter</span>
+          Sudarshan <span className="text-primary">Khatiwada</span>
         </a>
 
         {/* Desktop */}
