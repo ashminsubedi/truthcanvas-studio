@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import SageSection from "@/components/SageSection";
 import CareerTimeline from "@/components/CareerTimeline";
+import ArticlesSection from "@/components/ArticlesSection";
 import InternationalSection from "@/components/InternationalSection";
 import Footer from "@/components/Footer";
 
