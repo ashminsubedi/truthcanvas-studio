@@ -20,7 +20,7 @@ const AboutSection = () => {
             </h2>
             <div className="space-y-5 font-body text-base text-muted-foreground leading-relaxed">
               <p>
-                I'm Jordan Carter, an investigative journalist based in Washington, D.C., 
+                I'm Sudarshan Khatiwada, an investigative journalist 
                 covering corruption, civil rights, and institutional accountability. My work 
                 has appeared in The National Tribune, Global Report, and Civic Data Lab.
               </p>
