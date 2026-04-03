@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Playfair Display', 'Georgia', 'serif'],
-        body: ['Source Sans 3', 'system-ui', 'sans-serif'],
+        display: ['Archivo Black', 'sans-serif'],
+        body: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -23,9 +23,8 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        cream: "hsl(var(--cream))",
-        "cream-dim": "hsl(var(--cream-dim))",
-        highlight: "hsl(var(--highlight))",
+        sage: "hsl(var(--sage))",
+        "sage-light": "hsl(var(--sage-light))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
