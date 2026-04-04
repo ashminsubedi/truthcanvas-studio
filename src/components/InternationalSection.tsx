@@ -1,4 +1,5 @@
 import { SectionBadge } from "./SageSection";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const conferences = [
   { year: "2025", event: "ICA 75th Annual Conference", location: "Colorado, USA" },
