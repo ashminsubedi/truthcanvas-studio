@@ -1,3 +1,5 @@
+import profileImg from "@/assets/profile.jpg";
+
 const HeroSection = () => {
   return (
     <section className="min-h-screen flex items-center justify-center px-[8%] relative border-b-2 border-foreground overflow-hidden">
@@ -11,7 +13,7 @@ const HeroSection = () => {
             Journalist, Media Educator &amp; Community Broadcaster based in Kathmandu.
           </p>
           <a
-            href="#about"
+            href="/about"
             className="inline-block mt-6 font-display text-xs uppercase tracking-wider border-b-2 border-foreground pb-0.5 hover:opacity-70 transition-opacity"
           >
             More About Sudarshan
@@ -23,7 +25,7 @@ const HeroSection = () => {
           <div className="relative">
             <div className="bg-foreground/10 w-72 h-80 md:w-80 md:h-96 absolute -right-3 -bottom-3 rotate-3" />
             <img
-              src="https://www.onlinekhabar.com/wp-content/uploads/2021/07/Sudarshan_Khatiwada.jpg"
+              src={profileImg}
               alt="Sudarshan Khatiwada"
               width={320}
               height={400}
