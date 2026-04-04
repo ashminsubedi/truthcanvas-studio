@@ -52,6 +52,7 @@ const CareerTimeline = () => (
       ))}
     </div>
   </section>
-);
+  );
+};
 
 export default CareerTimeline;

@@ -32,6 +32,7 @@ const InternationalSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 export default InternationalSection;
