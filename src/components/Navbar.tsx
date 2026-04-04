@@ -35,15 +35,15 @@ const Navbar = () => {
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
-      {/* Mobile menu */}
+      {/* Mobile dropdown — sleek, not full-screen */}
       {open && (
-        <div className="md:hidden fixed inset-0 bg-background z-40 flex flex-col items-center justify-center gap-8">
+        <div className="md:hidden fixed top-14 right-4 z-40 bg-foreground text-background shadow-lg py-3 px-6 flex flex-col gap-1 animate-fade-up">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="font-display text-2xl uppercase tracking-wider hover:opacity-70 transition-opacity"
+              className="font-display text-sm uppercase tracking-wider py-2 hover:opacity-70 transition-opacity"
             >
               {item.label}
             </a>
