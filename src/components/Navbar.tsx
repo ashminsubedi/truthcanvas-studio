@@ -14,16 +14,16 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-4 px-[8%]">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-4 px-[8%] pointer-events-none">
       <Link
         to="/"
-        className="font-display text-sm uppercase tracking-wider hover:opacity-70 transition-opacity"
+        className="font-display text-sm uppercase tracking-wider hover:opacity-70 transition-opacity pointer-events-auto"
       >
         SK
       </Link>
 
       {/* Desktop nav */}
-      <div className="hidden md:flex items-center gap-8">
+      <div className="hidden md:flex items-center gap-8 pointer-events-auto">
         {navItems.map((item) => (
           <Link
             key={item.href}
@@ -40,27 +40,31 @@ const Navbar = () => {
       {/* Mobile hamburger */}
       <button
         onClick={() => setOpen(!open)}
-        className="md:hidden z-50 bg-foreground text-background p-2"
+        className="md:hidden z-50 bg-foreground text-background p-2 pointer-events-auto"
         aria-label="Toggle menu"
       >
         {open ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       {/* Mobile dropdown */}
-      {open && (
-        <div className="md:hidden fixed top-14 right-4 z-40 bg-foreground text-background shadow-lg py-3 px-6 flex flex-col gap-1 animate-fade-up">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              onClick={() => setOpen(false)}
-              className="font-display text-sm uppercase tracking-wider py-2 hover:opacity-70 transition-opacity"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      )}
+      <div
+        className={`md:hidden fixed top-14 right-[8%] z-40 bg-foreground text-background shadow-lg py-3 px-6 flex flex-col gap-1 pointer-events-auto transition-all duration-150 ease-out origin-top-right ${
+          open
+            ? "opacity-100 scale-100"
+            : "opacity-0 scale-95 pointer-events-none"
+        }`}
+      >
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            to={item.href}
+            onClick={() => setOpen(false)}
+            className="font-display text-sm uppercase tracking-wider py-2 hover:opacity-70 transition-opacity"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
     </nav>
   );
 };
