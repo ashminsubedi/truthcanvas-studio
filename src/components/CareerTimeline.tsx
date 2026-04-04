@@ -1,4 +1,5 @@
 import { SectionBadge } from "./SageSection";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const timeline = [
   {
