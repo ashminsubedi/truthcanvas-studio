@@ -34,24 +34,26 @@ const timeline = [
   },
 ];
 
-const CareerTimeline = () => (
-  <section id="about" className="py-24 px-[8%]">
-    <SectionBadge>Career Timeline</SectionBadge>
-    <div className="max-w-4xl space-y-0 divide-y divide-foreground/10">
-      {timeline.map((item, i) => (
-        <div key={i} className="py-8 grid md:grid-cols-[180px_1fr] gap-4 md:gap-8">
-          <span className="font-body text-xs font-semibold uppercase tracking-widest text-muted-foreground pt-1">
-            {item.period}
-          </span>
-          <div>
-            <h3 className="font-display text-lg uppercase mb-1">{item.title}</h3>
-            <p className="font-body text-sm font-medium text-sage mb-2">{item.org}</p>
-            <p className="font-body text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+const CareerTimeline = () => {
+  const ref = useScrollReveal();
+  return (
+    <section id="about" ref={ref} className="py-24 px-[8%]">
+      <SectionBadge>Career Timeline</SectionBadge>
+      <div className="max-w-4xl space-y-0 divide-y divide-foreground/10">
+        {timeline.map((item, i) => (
+          <div key={i} className="py-8 grid md:grid-cols-[180px_1fr] gap-4 md:gap-8">
+            <span className="font-body text-xs font-semibold uppercase tracking-widest text-muted-foreground pt-1">
+              {item.period}
+            </span>
+            <div>
+              <h3 className="font-display text-lg uppercase mb-1">{item.title}</h3>
+              <p className="font-body text-sm font-medium text-sage mb-2">{item.org}</p>
+              <p className="font-body text-base text-muted-foreground leading-relaxed">{item.desc}</p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-  </section>
+        ))}
+      </div>
+    </section>
   );
 };
 

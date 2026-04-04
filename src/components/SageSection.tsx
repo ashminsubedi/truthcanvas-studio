@@ -1,3 +1,5 @@
+import { useScrollReveal } from "@/hooks/useScrollReveal";
+
 interface BadgeProps {
   children: React.ReactNode;
 }
@@ -32,15 +34,18 @@ interface SageSectionProps {
   cards: CardProps[];
 }
 
-const SageSection = ({ id, badge, cards }: SageSectionProps) => (
-  <section id={id} className="bg-sage py-24 px-[8%] border-y border-cream-dark">
-    <SectionBadge>{badge}</SectionBadge>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl">
-      {cards.map((card, i) => (
-        <ContentCard key={i} {...card} />
-      ))}
-    </div>
-  </section>
-);
+const SageSection = ({ id, badge, cards }: SageSectionProps) => {
+  const ref = useScrollReveal();
+  return (
+    <section id={id} ref={ref} className="bg-sage py-24 px-[8%] border-y border-cream-dark">
+      <SectionBadge>{badge}</SectionBadge>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl">
+        {cards.map((card, i) => (
+          <ContentCard key={i} {...card} />
+        ))}
+      </div>
+    </section>
+  );
+};
 
 export default SageSection;

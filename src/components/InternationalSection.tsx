@@ -15,23 +15,25 @@ const conferences = [
   { year: "2013", event: "3rd AMARC Asia-Pacific Conference", location: "Seoul, South Korea" },
 ];
 
-const InternationalSection = () => (
-  <section className="py-24 px-[8%]">
-    <SectionBadge>International Exposure</SectionBadge>
-    <div className="max-w-4xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-        {conferences.map((c, i) => (
-          <div key={i} className="flex gap-4 items-start">
-            <span className="font-display text-sm text-sage shrink-0 mt-0.5">{c.year}</span>
-            <div>
-              <p className="font-body text-sm font-semibold text-foreground">{c.event}</p>
-              <p className="font-body text-xs text-muted-foreground uppercase tracking-wider mt-0.5">{c.location}</p>
+const InternationalSection = () => {
+  const ref = useScrollReveal();
+  return (
+    <section ref={ref} className="py-24 px-[8%]">
+      <SectionBadge>International Exposure</SectionBadge>
+      <div className="max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+          {conferences.map((c, i) => (
+            <div key={i} className="flex gap-4 items-start">
+              <span className="font-display text-sm text-sage shrink-0 mt-0.5">{c.year}</span>
+              <div>
+                <p className="font-body text-sm font-semibold text-foreground">{c.event}</p>
+                <p className="font-body text-xs text-muted-foreground uppercase tracking-wider mt-0.5">{c.location}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
   );
 };
 
