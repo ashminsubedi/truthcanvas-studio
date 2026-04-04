@@ -2,7 +2,7 @@ import profileImg from "@/assets/profile.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="min-h-screen flex items-center justify-center px-[8%] relative border-b-2 border-foreground overflow-hidden">
+    <section className="min-h-screen flex items-center justify-center px-[8%] pt-20 relative border-b-2 border-foreground overflow-hidden">
       <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl w-full">
         {/* Left: text */}
         <div>
