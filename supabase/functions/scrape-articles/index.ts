@@ -1,6 +1,10 @@
 // Scrapes Sudarshan Khatiwada's author page on Onlinekhabar and returns
 // a normalized list of articles. Public endpoint (no auth required).
-import { corsHeaders } from "@supabase/supabase-js/cors";
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
 
 const SOURCE_URL = "https://www.onlinekhabar.com/writer/sudarshan_khatiwada/";
 
