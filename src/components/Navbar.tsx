@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import profileImg from "@/assets/profile.jpg";
+import { useHideOnScroll } from "@/hooks/useHideOnScroll";
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -13,9 +14,14 @@ const navItems = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const visible = useHideOnScroll();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-4 px-[8%] pointer-events-none">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between py-4 px-[8%] pointer-events-none transition-transform duration-300 ease-out ${
+        visible || open ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <Link
         to="/"
         className="flex items-center gap-3 hover:opacity-70 transition-opacity pointer-events-auto"
