@@ -38,55 +38,58 @@ function stripTags(s: string): string {
 }
 
 /**
- * Onlinekhabar's author page renders each article as an <article> element
- * containing an image, an <h2><a href="...">title</a></h2>, an excerpt
- * paragraph, and a date span. We parse those with regex (no DOM in Deno
- * by default) and tolerate slight markup variations.
+ * Onlinekhabar's author page wraps the writer's articles in
+ *   <section class="ok-section ok-section-author-post-lists"> ... </section>
+ * Each article is a <div class="ok-news-post ..."> containing:
+ *   - <a href="..."><img src="..." alt="..."></a>
+ *   - <h2 class="ok-news-title-txt">title</h2>
+ *   - <p>excerpt</p>
+ *   - <div class="ok-title-info">… date span …</div>
  */
 function parseArticles(html: string): Article[] {
+  const sectionMatch = html.match(
+    /<section[^>]*class="[^"]*ok-section-author-post-lists[^"]*"[\s\S]*?<\/section>/,
+  );
+  if (!sectionMatch) return [];
+  const section = sectionMatch[0];
+
+  // Split on the opening tag of each article block, keeping the tag itself.
+  const parts = section.split(/(?=<div class="ok-news-post[^"]*">)/);
   const results: Article[] = [];
-  const articleBlocks = html.match(/<article[\s\S]*?<\/article>/g) ?? [];
 
-  for (const block of articleBlocks) {
-    const linkMatch = block.match(
-      /<h2[^>]*>\s*<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>\s*<\/h2>/,
+  for (const part of parts) {
+    if (!part.startsWith('<div class="ok-news-post')) continue;
+
+    const urlMatch = part.match(/<a[^>]+href="([^"]+)"/);
+    if (!urlMatch) continue;
+    const url = urlMatch[1];
+    if (!/onlinekhabar\.com\/\d{4}\/\d{2}\/\d+\//.test(url)) continue;
+
+    const titleMatch = part.match(
+      /<h2[^>]*class="[^"]*ok-news-title-txt[^"]*"[^>]*>([\s\S]*?)<\/h2>/,
     );
-    if (!linkMatch) continue;
-    const url = linkMatch[1];
-    const title = stripTags(linkMatch[2]);
-    if (!url.includes("onlinekhabar.com")) continue;
+    const title = titleMatch ? stripTags(titleMatch[1]) : "";
+    if (!title) continue;
 
-    const imgMatch =
-      block.match(/<img[^>]+(?:data-src|src)="([^"]+\.(?:jpg|jpeg|png|webp))"/i) ??
-      block.match(/<img[^>]+src="([^"]+)"/i);
+    const imgMatch = part.match(/<img[^>]+src="([^"]+)"/i);
     const image = imgMatch ? imgMatch[1] : "";
 
-    const excerptMatch =
-      block.match(/<p[^>]*class="[^"]*ok-post-summary[^"]*"[^>]*>([\s\S]*?)<\/p>/) ??
-      block.match(/<p[^>]*>([\s\S]*?)<\/p>/);
+    const excerptMatch = part.match(/<\/h2>\s*<p[^>]*>([\s\S]*?)<\/p>/);
     const excerpt = excerptMatch ? stripTags(excerptMatch[1]) : "";
 
-    const dateMatch =
-      block.match(/<span[^>]*class="[^"]*ok-post-date[^"]*"[^>]*>([\s\S]*?)<\/span>/) ??
-      block.match(/(२०\d{2}\s+[^\s<]+\s+\d+\s+गते[^<]*)/);
-    const date = dateMatch ? stripTags(dateMatch[1]) : "";
+    const dateBlockMatch = part.match(
+      /<div[^>]*class="[^"]*ok-title-info[^"]*"[^>]*>([\s\S]*?)<\/div>/,
+    );
+    let date = "";
+    if (dateBlockMatch) {
+      const inner = stripTags(dateBlockMatch[1]);
+      const m = inner.match(
+        /२०\d{2}[^०-९0-9]+[०-९\d]+\s*गते(?:[^०-९0-9]*[०-९\d]{1,2}[:\.][०-९\d]{2})?/,
+      );
+      date = m ? m[0].trim() : inner.split(/\s{2,}/)[0].trim();
+    }
 
     results.push({ title, excerpt, date, url, image });
-  }
-
-  // Fallback: if the regex above misses (markup change), look for the
-  // pattern Lovable already saw in the markdown dump.
-  if (results.length === 0) {
-    const linkRegex =
-      /<a[^>]+href="(https:\/\/www\.onlinekhabar\.com\/\d{4}\/\d{2}\/\d+\/[^"]+)"[^>]*>[\s\S]*?<img[^>]+src="([^"]+)"[\s\S]*?<\/a>/g;
-    const seen = new Set<string>();
-    let m: RegExpExecArray | null;
-    while ((m = linkRegex.exec(html))) {
-      const url = m[1];
-      if (seen.has(url)) continue;
-      seen.add(url);
-      results.push({ title: "", excerpt: "", date: "", url, image: m[2] });
-    }
   }
 
   return results;
