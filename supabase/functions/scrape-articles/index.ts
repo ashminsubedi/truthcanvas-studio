@@ -107,7 +107,17 @@ Deno.serve(async (req) => {
 
   try {
     const url = new URL(req.url);
-    const pageParam = url.searchParams.get("page");
+    let pageParam: string | number | null = url.searchParams.get("page");
+    if (!pageParam && (req.method === "POST" || req.method === "PUT")) {
+      try {
+        const body = await req.json();
+        if (body && typeof body === "object" && "page" in body) {
+          pageParam = (body as { page: number | string }).page;
+        }
+      } catch {
+        // ignore — empty/invalid body
+      }
+    }
     const page = Math.max(1, Math.min(20, Number(pageParam) || 1));
     const sourceUrl = buildSourceUrl(page);
 
