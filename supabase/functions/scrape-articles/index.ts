@@ -6,7 +6,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const SOURCE_URL = "https://www.onlinekhabar.com/writer/sudarshan_khatiwada/";
+const BASE_URL = "https://www.onlinekhabar.com/writer/sudarshan_khatiwada";
+
+function buildSourceUrl(page: number): string {
+  if (page <= 1) return `${BASE_URL}/`;
+  return `${BASE_URL}/page/${page}/`;
+}
 
 type Article = {
   title: string;
