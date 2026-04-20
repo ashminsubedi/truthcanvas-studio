@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: '/truthcanvas-studio/',
+  base: '/',
   build: {
     rollupOptions: {
       output: {
