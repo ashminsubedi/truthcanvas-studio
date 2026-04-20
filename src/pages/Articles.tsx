@@ -53,29 +53,77 @@ const Articles = () => {
 
   const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [usingFallback, setUsingFallback] = useState(true);
   const [scrapedAt, setScrapedAt] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+
+  const fetchPage = async (
+    pageNum: number,
+  ): Promise<{ articles: Article[]; hasMore: boolean; scrapedAt?: string }> => {
+    const { data, error } = await supabase.functions.invoke("scrape-articles", {
+      body: { page: pageNum },
+    });
+    if (error) throw error;
+    const fetched: Article[] = (data?.articles ?? []).filter(
+      (a: Article) => a.title && a.url,
+    );
+    return {
+      articles: fetched,
+      hasMore: !!data?.hasMore,
+      scrapedAt: data?.scrapedAt,
+    };
+  };
 
   const load = async () => {
     setLoading(true);
+    setPage(1);
     try {
-      const { data, error } = await supabase.functions.invoke("scrape-articles");
-      if (error) throw error;
-      const fetched: Article[] = (data?.articles ?? []).filter(
-        (a: Article) => a.title && a.url,
-      );
-      if (fetched.length > 0) {
-        setArticles(fetched);
+      const result = await fetchPage(1);
+      if (result.articles.length > 0) {
+        setArticles(result.articles);
         setUsingFallback(false);
-        setScrapedAt(data?.scrapedAt ?? null);
+        setHasMore(result.hasMore);
+        setScrapedAt(result.scrapedAt ?? null);
       } else {
         setUsingFallback(true);
+        setHasMore(false);
       }
     } catch (err) {
       console.error("Failed to load articles:", err);
       setUsingFallback(true);
+      setHasMore(false);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    try {
+      const result = await fetchPage(nextPage);
+      if (result.articles.length > 0) {
+        setArticles((prev) => {
+          const seen = new Set(prev.map((a) => a.url));
+          const merged = [...prev];
+          for (const a of result.articles) {
+            if (!seen.has(a.url)) merged.push(a);
+          }
+          return merged;
+        });
+        setPage(nextPage);
+        setHasMore(result.hasMore);
+      } else {
+        setHasMore(false);
+      }
+    } catch (err) {
+      console.error("Failed to load more articles:", err);
+      setHasMore(false);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -244,6 +292,33 @@ const Articles = () => {
             </a>
           ))}
         </div>
+
+        {/* Load more */}
+        {!usingFallback && (
+          <div className="mt-12 flex flex-col items-center gap-3">
+            {hasMore ? (
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="inline-flex items-center gap-2 border-2 border-foreground font-display text-xs uppercase tracking-wider px-8 py-4 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loadingMore ? (
+                  <>
+                    <RefreshCw size={14} className="animate-spin" />
+                    Loading more…
+                  </>
+                ) : (
+                  <>Load more articles</>
+                )}
+              </button>
+            ) : (
+              <p className="font-body text-xs uppercase tracking-wider text-muted-foreground">
+                You've reached the end · {articles.length} articles loaded
+              </p>
+            )}
+          </div>
+        )}
 
         {/* CTA to source */}
         <div className="mt-16 border-t-2 border-foreground pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

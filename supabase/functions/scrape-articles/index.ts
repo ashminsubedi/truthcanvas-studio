@@ -6,7 +6,12 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const SOURCE_URL = "https://www.onlinekhabar.com/writer/sudarshan_khatiwada/";
+const BASE_URL = "https://www.onlinekhabar.com/writer/sudarshan_khatiwada";
+
+function buildSourceUrl(page: number): string {
+  if (page <= 1) return `${BASE_URL}/`;
+  return `${BASE_URL}/page/${page}/`;
+}
 
 type Article = {
   title: string;
@@ -101,7 +106,22 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const upstream = await fetch(SOURCE_URL, {
+    const url = new URL(req.url);
+    let pageParam: string | number | null = url.searchParams.get("page");
+    if (!pageParam && (req.method === "POST" || req.method === "PUT")) {
+      try {
+        const body = await req.json();
+        if (body && typeof body === "object" && "page" in body) {
+          pageParam = (body as { page: number | string }).page;
+        }
+      } catch {
+        // ignore — empty/invalid body
+      }
+    }
+    const page = Math.max(1, Math.min(20, Number(pageParam) || 1));
+    const sourceUrl = buildSourceUrl(page);
+
+    const upstream = await fetch(sourceUrl, {
       headers: {
         "User-Agent":
           "Mozilla/5.0 (compatible; SudarshanKhatiwadaSite/1.0; +https://lovable.dev)",
@@ -116,9 +136,10 @@ Deno.serve(async (req) => {
         JSON.stringify({
           error: `Upstream returned ${upstream.status}`,
           detail: body.slice(0, 500),
+          page,
         }),
         {
-          status: 502,
+          status: upstream.status === 404 ? 404 : 502,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         },
       );
@@ -126,10 +147,14 @@ Deno.serve(async (req) => {
 
     const html = await upstream.text();
     const articles = parseArticles(html);
+    // If a page returns no articles, treat it as the end of the archive.
+    const hasMore = articles.length > 0 && page < 20;
 
     return new Response(
       JSON.stringify({
-        source: SOURCE_URL,
+        source: sourceUrl,
+        page,
+        hasMore,
         scrapedAt: new Date().toISOString(),
         count: articles.length,
         articles,
@@ -139,8 +164,6 @@ Deno.serve(async (req) => {
         headers: {
           ...corsHeaders,
           "Content-Type": "application/json",
-          // Cache at the edge for 1 hour to avoid hammering Onlinekhabar
-          // when many visitors hit the page.
           "Cache-Control": "public, max-age=300, s-maxage=3600",
         },
       },
