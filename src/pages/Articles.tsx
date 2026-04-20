@@ -293,6 +293,33 @@ const Articles = () => {
           ))}
         </div>
 
+        {/* Load more */}
+        {!usingFallback && (
+          <div className="mt-12 flex flex-col items-center gap-3">
+            {hasMore ? (
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="inline-flex items-center gap-2 border-2 border-foreground font-display text-xs uppercase tracking-wider px-8 py-4 hover:bg-foreground hover:text-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loadingMore ? (
+                  <>
+                    <RefreshCw size={14} className="animate-spin" />
+                    Loading more…
+                  </>
+                ) : (
+                  <>Load more articles</>
+                )}
+              </button>
+            ) : (
+              <p className="font-body text-xs uppercase tracking-wider text-muted-foreground">
+                You've reached the end · {articles.length} articles loaded
+              </p>
+            )}
+          </div>
+        )}
+
         {/* CTA to source */}
         <div className="mt-16 border-t-2 border-foreground pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="font-body text-sm text-muted-foreground max-w-md">
